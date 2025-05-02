@@ -1,61 +1,31 @@
-import { Suspense, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-
-import Developer from "../components/Developer.jsx";
-import CanvasLoader from "../components/Loading.jsx";
 import { experienceInfo } from "../constants/info.js";
 
 const Experience = () => {
-  const [animationName, setAnimationName] = useState("idle");
-
   return (
-    <section className="c-space w-full h-full py-10 overflow-auto" id="experience">
-      <div className="w-full text-white-600 flex items-center justify-center">
-        <div className="experience-container">
-          <div className="experience-canvas">
-            <Canvas>
-              <ambientLight intensity={7} />
-              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-              <directionalLight position={[10, 10, 10]} intensity={1} />
-              <OrbitControls enableZoom={false} maxPolarAngle={Math.PI / 2} />
-
-              <Suspense fallback={<CanvasLoader />}>
-                <Developer position-y={-3} scale={3} animationName={animationName} />
-              </Suspense>
-            </Canvas>
-          </div>
-
-          <div className="experience-content">
-            <div className="sm:py-10 py-5 sm:px-5 px-2.5">
-              {experienceInfo.map((item, index) => (
-                <div
-                  key={index}
-                  onClick={() => setAnimationName(item.animation.toLowerCase())}
-                  onPointerOver={() => setAnimationName(item.animation.toLowerCase())}
-                  onPointerOut={() => setAnimationName("idle")}
-                  className="expeirence-content-container group"
-                >
-                  <div className="flex flex-col h-full justify-start items-center py-2">
-                    <div className="experience-content_logo">
-                      <img className="w-full h-full" src={item.icon} alt="" />
-                    </div>
-
-                    <div className="experience-content_bar" />
+    <section className="c-space h-fit flex items-center justify-center" id="experience">
+      <div className="experience-container w-full text-white-600">
+        <div className="experience-content">
+          <div className="sm:py-10 py-5 px-5">
+            {experienceInfo.map((item, index) => (
+              <div key={index} className="experience-content-container group">
+                <div className="flex flex-col h-full justify-start items-center py-2">
+                  <div className="experience-content_logo">
+                    <img className="w-full h-full" src={item.icon} alt="" />
                   </div>
-                  <div className="sm:p-5 px-2.5 py-5 flex flex-col">
-                    <p className="font-bold text-white-800">{item.name}</p>
-                    <p className="text-sm">{item.pos}</p>
-                    <p className="text-sm mb-5 ml-auto">{item.duration}</p>
-                    <ul className="list-disc list-inside group-hover:text-white transition-all ease-in-out duration-500 tracking-wide">
-                      {item.highlights.map((point, index) => (
-                        <li key={index}>{point}</li>
-                      ))}
-                    </ul>
-                  </div>
+                  <div className="experience-content_bar" />
                 </div>
-              ))}
-            </div>
+                <div className="sm:p-5 px-2.5 py-5 flex flex-col">
+                  <p className="font-bold text-white-800">{item.name}</p>
+                  <p className="text-sm">{item.pos}</p>
+                  <p className="text-sm mb-5 ml-auto">{item.duration}</p>
+                  <ul className="list-disc list-inside lg:group-hover:text-white transition-all ease-in-out duration-500 tracking-wide">
+                    {item.highlights.map((point, index) => (
+                      <li key={index}>{point}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

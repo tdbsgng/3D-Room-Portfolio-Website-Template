@@ -32,7 +32,7 @@ const Projects = (props) => {
   const currentProject = projectsInfo[selectedProjectIndex];
 
   return (
-    <section className="c-space w-full h-full overflow-auto flex flex-col py-6" id="projects">
+    <section className="c-space h-fit flex items-center justify-center" id="projects">
       <div className="grid xl:grid-cols-2 grid-cols-1 w-full gap-6 px-4">
         {/* text */}
         <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200 rounded-xl overflow-hidden">
@@ -82,10 +82,7 @@ const Projects = (props) => {
 
           {/* Navigation buttons with higher z-index */}
           <div className="flex justify-between items-center mt-auto relative z-20">
-            <button 
-              className="arrow-btn relative" 
-              onClick={() => handleNavigation("previous")}
-            >
+            <button className="arrow-btn relative" onClick={() => handleNavigation("previous")}>
               <ArrowLeft className="w-4 h-4 text-purple-500" />
             </button>
 
@@ -93,10 +90,7 @@ const Projects = (props) => {
               {selectedProjectIndex + 1} / {projectCount}
             </p>
 
-            <button 
-              className="arrow-btn relative" 
-              onClick={() => handleNavigation("next")}
-            >
+            <button className="arrow-btn relative" onClick={() => handleNavigation("next")}>
               <ArrowRight className="w-4 h-4 text-purple-500" />
             </button>
           </div>

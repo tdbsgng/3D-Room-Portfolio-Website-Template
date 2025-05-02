@@ -61,7 +61,6 @@ function Hero(props) {
               <InteractiveLogos objectConfigs={objectConfigs} lightMode={props.lightMode}/>
               <Mac scale={objectConfigs.macScale} position={objectConfigs.macPosition} rotation={[0, Math.PI, 0]} />
               <Screen
-                isMobile={props.isMobile}
                 scale={objectConfigs.screenScale}
                 position={objectConfigs.screenPostion}
                 rotation={[-Math.PI / 36, 0, 0]}

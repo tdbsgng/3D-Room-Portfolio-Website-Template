@@ -111,7 +111,7 @@ const AboutMe = () => {
                   {Object.entries(aboutMeInfo.link).map(
                     ([name, link]) =>
                       link && (
-                        <a href={link} target="_blank" rel="noopener noreferrer" className="social-icon">
+                        <a href={link} target="_blank" rel="noopener noreferrer" className="social-icon" key={name}>
                           <img src={`/assets/icon/${name}.svg`} alt={name} className="w-1/2 h-1/2" />
                         </a>
                       )

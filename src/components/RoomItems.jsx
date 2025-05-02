@@ -66,6 +66,7 @@ export const Mac = (props) => {
 
 export const Screen = (props) => {
   const texture = useTexture("./assets/image/screen.png");
+  const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
   const [activeIndex, setActiveIndex] = useState(null);
   const mainMeshRef = useRef();
 
@@ -114,7 +115,7 @@ export const Screen = (props) => {
           key={index}
           position={section.position}
           onClick={(e) => {
-            if (props.isMobile) {
+            if (isTouchDevice) {
               props.setActiveSection([sections[index].name, 0]);
               return;
             }
@@ -174,16 +175,18 @@ export const InteractiveLogos = (props) => {
     </>
   );
 };
-export const Posters = (props) => {
+export const Posters = () => {
   const Poster = (props) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 1 });
     const [position, setPosition] = useState([0, 0, 0]);
+    const [isReady, setIsReady] = useState(false);
 
+    // Load the texture
     const texture = useTexture(props.texturePath);
 
+    // Only calculate dimensions once when the texture loads
     useEffect(() => {
-      // Calculate the dimensions and position of the poster based on the texture size
-      if (texture && texture.image) {
+      if (texture && texture.image && !isReady) {
         const imgWidth = texture.image.width;
         const imgHeight = texture.image.height;
         const aspectRatio = imgWidth / imgHeight;
@@ -203,30 +206,22 @@ export const Posters = (props) => {
 
         setPosition([centerX, centerY, centerZ]);
         setDimensions({ width, height });
+        setIsReady(true);
       }
-    }, [texture]);
-    if (!texture || !texture.image) return null;
+    }, [texture, props.leftTop, props.rightTop, isReady]);
+    // Don't render anything until the texture is loaded and calculations are done
+    if (!texture || !texture.image || !isReady) return null;
     return (
       <group position={position} {...props}>
-        {/* Frame */}
-        {/* <mesh>
-            <boxGeometry args={[dimensions.width * 1.1, dimensions.height * 1.1, 0.05]} />
-            <meshStandardMaterial color="#444" />
-          </mesh> */}
-
         {/* Poster */}
         <mesh position={[0, 0, 0.026]}>
           <boxGeometry args={[dimensions.width, dimensions.height, 0.2]} />
-          <meshStandardMaterial
-            map={texture}
-            emissive={"#fff"}
-            emissiveMap={texture}
-            emissiveIntensity={!props.lightMode * 2}
-          />
+          <meshBasicMaterial map={texture} />
         </mesh>
       </group>
     );
   };
+
   return (
     <>
       {verticalPosterPath.map((texturePath, index) => (

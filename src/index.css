@@ -66,24 +66,19 @@ body {
   }
 
   /*  work experience section */
-  .education-container {
-    @apply grid grid-cols-2 gap-5 mt-12;
-  }
+  .education-container,
   .experience-container {
-    @apply grid lg:grid-cols-3 grid-cols-1 gap-5 mt-12;
+    @apply grid grid-cols-2 gap-5;
   }
 
-  .experience-canvas {
-    @apply col-span-1 rounded-lg bg-black-200 border border-black-300;
-  }
 
   .experience-content,
   .education-content {
     @apply col-span-2 rounded-lg bg-black-200 border border-black-300;
   }
-  .expeirence-content-container,
+  .experience-content-container,
   .education-content-container {
-    @apply grid grid-cols-[auto_1fr] items-start gap-5  transition-all ease-in-out duration-500 cursor-pointer md:hover:bg-black-300 rounded-lg sm:px-5 px-2.5;
+    @apply grid grid-cols-[auto_1fr] items-start gap-5  transition-all ease-in-out duration-500 cursor-pointer md:hover:bg-black-300 rounded-lg p-5;
   }
 
   .experience-content_logo {

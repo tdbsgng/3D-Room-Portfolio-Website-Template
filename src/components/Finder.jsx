@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FolderIcon, ChevronLeft, ChevronRight, X, Minus } from "lucide-react";
+import { FolderIcon, X, Minus } from "lucide-react";
 
 const Finder = (props) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -10,7 +10,6 @@ const Finder = (props) => {
   const navigationItems = ["About Me", "Education", "Projects", "Experience"];
   
   useEffect(() => {
-    console.log("aaa");
     if (windowRef.current) {
       windowRef.current.scrollTo(0, 0);
     }
@@ -160,7 +159,7 @@ const Finder = (props) => {
           )}
 
           {/* Main content */}
-          <div className="flex flex-1 overflow-hidden">
+          <div className="flex flex-1 overflow-hidden h-full">
             {/* Sidebar - Only show if not mobile and not fullscreen */}
             {shouldShowSidebar && (
               <div className="w-48 bg-gray-800 p-4 text-gray-300 overflow-y-auto">
@@ -176,7 +175,7 @@ const Finder = (props) => {
             )}
 
             {/* Content area */}
-            <div className="flex-1 bg-gray-900 overflow-y-auto overflow-x-hidden py-10 lg:py-0 flex lg:items-center" ref={windowRef}>
+            <div className="flex-1 bg-gray-900 overflow-y-auto overflow-x-hidden h-full py-10" ref={windowRef}>
               {props.sectionsContent[props.activeSection[0]]}
             </div>
           </div>
