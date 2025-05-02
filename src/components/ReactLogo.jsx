@@ -2,7 +2,6 @@ import { useGLTF } from '@react-three/drei';
 import { useState, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import Firework from './firework';
-import { checkNightTime } from './TimeBasedLighting';
 
 const ReactLogo = (props) => {
   const { nodes } = useGLTF('models/react.glb');
@@ -16,17 +15,7 @@ const ReactLogo = (props) => {
   const nextFireworkId = useRef(0);
   const reachedTargetHeight = useRef(false);
   const targetHeight = 5;
-  const [isNightTime, setIsNightTime] = useState(false);
 
-  useEffect(() => {
-    setIsNightTime(checkNightTime());
-
-    const intervalId = setInterval(() => {
-      setIsNightTime(checkNightTime());
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   const handleClick = () => {
     // Add extra power for consecutive hits
@@ -89,7 +78,7 @@ const ReactLogo = (props) => {
   return (
     <>
       {fireworks.map((fw) => (
-        <Firework key={fw.id} position={fw.position} trailCount={500} isNightTime={isNightTime}/>
+        <Firework key={fw.id} position={fw.position} trailCount={500} lightMode={props.lightMode}/>
       ))}
       
       {/* Render react logo */}

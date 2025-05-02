@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from 'react';
 import { Float, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import gsap from 'gsap';
-import { checkNightTime } from './TimeBasedLighting';
 const CppLogo = (props) => {
   const { nodes, materials } = useGLTF('models/cpp.glb');
   const groupRef = useRef();
@@ -14,17 +13,7 @@ const CppLogo = (props) => {
 
   const initialRotation = [-Math.PI / 2, -Math.PI / 12, 0];
   const meshRef = useRef();
-  const [isNightTime, setIsNightTime] = useState(false);
 
-  useEffect(() => {
-    setIsNightTime(checkNightTime());
-
-    const intervalId = setInterval(() => {
-      setIsNightTime(checkNightTime());
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -86,7 +75,7 @@ const CppLogo = (props) => {
 
   return (
     <group ref={groupRef} {...props}>
-      <pointLight ref={lightRef} position={[0, 3, 3]} intensity={0} distance={10} decay={2} color={isNightTime?'#87CEFA':'#AA33FF'} />
+      <pointLight ref={lightRef} position={[0, 3, 3]} intensity={0} distance={10} decay={2} color={props.lightMode?'#87CEFA':'#AA33FF'} />
       <group dispose={null}>
         <mesh
           onPointerEnter={() => setHovered(true)}

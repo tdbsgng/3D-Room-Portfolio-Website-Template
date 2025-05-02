@@ -1,48 +1,66 @@
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { useState } from 'react';
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
-
-import { projectsInfo } from '../constants/info.js';
+import { projectsInfo } from "../constants/info.js";
+import MediaDisplay from "../components/MediaDisplay.jsx";
 
 const projectCount = projectsInfo.length;
 
-const Projects = () => {
+// Projects component with the new media display functionality
+const Projects = (props) => {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
 
   const handleNavigation = (direction) => {
     setSelectedProjectIndex((prevIndex) => {
-      if (direction === 'previous') {
-        return prevIndex === 0 ? projectCount - 1 : prevIndex - 1;
+      let returnIndex;
+      if (direction === "previous") {
+        returnIndex = prevIndex === 0 ? projectCount - 1 : prevIndex - 1;
       } else {
-        return prevIndex === projectCount - 1 ? 0 : prevIndex + 1;
+        returnIndex = prevIndex === projectCount - 1 ? 0 : prevIndex + 1;
       }
+      props.setActiveSection(["Projects", returnIndex]);
+      return returnIndex;
     });
   };
 
   useGSAP(() => {
-    gsap.fromTo(`.animatedText`, { opacity: 0 }, { opacity: 1, duration: 1, stagger: 0.2, ease: 'power2.inOut' });
+    gsap.fromTo(`.animatedText`, { opacity: 0 }, { opacity: 1, duration: 1, stagger: 0.2, ease: "power2.inOut" });
   }, [selectedProjectIndex]);
 
   const currentProject = projectsInfo[selectedProjectIndex];
 
   return (
-    <section className="c-space my-5" id="projects">
-      <div className="grid lg:grid-cols-2 grid-cols-1 mt-12 gap-5 w-full">
-        <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200">
-          <div className="absolute top-0 right-0">
-            <img src={currentProject.spotlight} alt="spotlight" className="w-full h-96 object-cover rounded-xl" />
+    <section className="c-space w-full h-full overflow-auto flex flex-col py-6" id="projects">
+      <div className="grid xl:grid-cols-2 grid-cols-1 w-full gap-6 px-4">
+        {/* text */}
+        <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200 rounded-xl overflow-hidden">
+          {/* Spotlight image with lower z-index */}
+          <div className="absolute top-0 right-0 z-0">
+            <img src="/assets/image/spotlight.png" alt="spotlight" className="w-full h-auto object-cover" />
           </div>
 
-          <div className="flex flex-col gap-5 text-white-600 my-5">
-            <p className="text-white text-2xl font-semibold animatedText">{currentProject.title}</p>
-
-            <p className="animatedText">{currentProject.desc}</p>
-            <p className="animatedText">{currentProject.subdesc}</p>
+          <div className="flex flex-col gap-5 text-white-600 my-3 relative z-10">
+            <div className="flex justify-between items-center">
+              <p className="text-white text-2xl font-semibold animatedText">{currentProject.title}</p>
+            </div>
+            <p className="animatedText tracking-wide">{currentProject.desc}</p>
+            <p className="text-sm mb-5 ml-auto animatedText">{currentProject.duration}</p>
+            <ul className="list-disc list-inside mt-3 group-hover:text-white transition-all ease-in-out duration-500">
+              {currentProject.highlights.map((point, index) => (
+                <li
+                  key={index}
+                  className="animatedText tracking-wide"
+                  dangerouslySetInnerHTML={{
+                    __html: point.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>'),
+                  }}
+                />
+              ))}
+            </ul>
           </div>
 
-          <div className="flex items-center justify-between flex-wrap gap-5">
+          <div className="flex items-center justify-between flex-wrap gap-5 mt-auto relative z-10">
             <div className="flex items-center gap-3">
               {currentProject.tags.map((tag, index) => (
                 <div key={index} className="tech-logo">
@@ -55,24 +73,38 @@ const Projects = () => {
               className="flex items-center gap-2 cursor-pointer text-white-600"
               href={currentProject.href}
               target="_blank"
-              rel="noreferrer">
+              rel="noreferrer"
+            >
               <p>Check Details</p>
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4 text-purple-500" />
             </a>
           </div>
 
-          <div className="flex justify-between items-center mt-7">
-            <button className="arrow-btn" onClick={() => handleNavigation('previous')}>
-              <ArrowLeft className="w-4 h-4" />
+          {/* Navigation buttons with higher z-index */}
+          <div className="flex justify-between items-center mt-auto relative z-20">
+            <button 
+              className="arrow-btn relative" 
+              onClick={() => handleNavigation("previous")}
+            >
+              <ArrowLeft className="w-4 h-4 text-purple-500" />
             </button>
 
-            <button className="arrow-btn" onClick={() => handleNavigation('next')}>
-              <ArrowRight className="w-4 h-4" />
+            <p className="text-white text-sm">
+              {selectedProjectIndex + 1} / {projectCount}
+            </p>
+
+            <button 
+              className="arrow-btn relative" 
+              onClick={() => handleNavigation("next")}
+            >
+              <ArrowRight className="w-4 h-4 text-purple-500" />
             </button>
           </div>
         </div>
-
-        <div className="border border-black-300 bg-black-200 rounded-lg h-96 md:h-full"></div>
+        {/* media */}
+        <div className="border border-black-300 bg-black-200 rounded-xl relative overflow-hidden">
+          <MediaDisplay project={currentProject} />
+        </div>
       </div>
     </section>
   );

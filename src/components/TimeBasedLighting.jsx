@@ -1,25 +1,8 @@
-import { useEffect, useState } from 'react';
-export function checkNightTime() {
-  const currentHour = new Date().getHours();
-  return (currentHour >= 18 || currentHour < 6);
-}
-
-export const TimeBasedLighting = () => {
-  const [isNightTime, setIsNightTime] = useState(false);
-
-  useEffect(() => {
-    setIsNightTime(checkNightTime());
-
-    const intervalId = setInterval(() => {
-      setIsNightTime(checkNightTime());
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+export const TimeBasedLighting = (props) => {
 
   return (
     <>
-      {isNightTime ? (
+      {props.lightMode ? (
         <>
           <pointLight position={[-10, 10, -2]} intensity={1000} distance={100} decay={2} color={'red'} />
           {/* <pointLight position={[-10, 10, -2]} intensity={1000} distance={100} decay={2} color={'purple'} />

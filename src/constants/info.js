@@ -1,5 +1,7 @@
 export const aboutMeInfo = {
-  name: "Howard Yu ( 游鈞皓 )",
+  firstName: "Howard",
+  lastName: "Yu",
+  aka: "游鈞皓",
   email: "howard89213@gmail.com",
   location: {
     city: "New Taipei, Taiwan",
@@ -53,8 +55,12 @@ export const educationInfo = [
 export const projectsInfo = [
   {
     title: "CS-Agent - AI Computer Science Problem Solver",
-    desc: "CS-Agent is an innovative platform that aims to solve computer science problems through LLMs and a dedicated API. As team lead, I designed a system that effectively tackles challenges in algorithms, data structures, and linear algebra.",
-    highlights: [],
+    desc: "An innovative platform that aims to solve computer science problems through LLMs and a dedicated API.",
+    duration: "Jan. 2024 - Present",
+    highlights: [
+      "Building a computation API and a web interface to tackle problems in algorithms, data structures, and linear algebra.",
+      "Developed a matrix calculator supporting **20** matrix operations and matrix expressions calculations.",
+    ],
     href: "",
     texture: "/assets/project/project1.mp4",
     logoStyle: {
@@ -62,7 +68,6 @@ export const projectsInfo = [
       border: "0.2px solid #36201D",
       boxShadow: "0px 0px 60px 0px #AA3C304D",
     },
-    spotlight: "/assets/spotlight1.png",
     tags: [
       {
         id: 1,
@@ -75,10 +80,22 @@ export const projectsInfo = [
         path: "assets/icon/python.png",
       },
     ],
+    mediaFiles: [
+      "assets/projects/project1/project1-cover.png",
+      "/assets/projects/project1/project1-1.png",
+      "/assets/projects/project1/project1-2.png",
+      "/assets/projects/project1/project1-3.png",
+    ],
   },
   {
-    title: "3D Human Reconstruction System",
-    desc: "This groundbreaking 3D human reconstruction system leverages Score Distillation Sampling to achieve 1.9x improvement in overall reconstruction quality. The project seamlessly integrates state-of-the-art technologies including Large Language Models and Diffusion Models.",
+    title: "HARDER: 3D Human Avatar Reconstruction with Distillation and Explicit Representation",
+    desc: "A novel framework for reconstructing a 3D human avatar from a single RGB image, integrating Score Distillation Sampling (SDS) and multimodal large language models (LLMs), implemented in PyTorch.",
+    duration: "Feb. 2024 - Oct. 2024",
+    highlights: [
+      "Designed a new 3D human reconstruction system with a **1.9x** improvement in overall reconstruction quality.",
+      "Optimized training strategies, achieving a **3.3x** acceleration in reconstruction time.",
+      "Reduced GPU VRAM usage for reconstruction by **65.6%** through system optimization."
+    ],
     href: "",
     texture: "/assets/image/project/project2.mp4",
     logoStyle: {
@@ -86,7 +103,6 @@ export const projectsInfo = [
       border: "0.2px solid #17293E",
       boxShadow: "0px 0px 60px 0px #2F6DB54D",
     },
-    spotlight: "/assets/spotlight2.png",
     tags: [
       {
         id: 1,
@@ -99,10 +115,22 @@ export const projectsInfo = [
         path: "assets/icon/pytorch.png",
       },
     ],
+    mediaFiles: [
+      "assets/projects/project2/project2-cover.gif",
+      "/assets/projects/project2/project2-1.png",
+      "/assets/projects/project2/project2-2.png",
+      "/assets/projects/project2/project2-3.png",
+    ],
   },
   {
     title: "3D AR Teleconference Application",
-    desc: "An innovative multi-user 3D augmented reality teleconference platform developed for Jorjin Technologies. This client-server architecture solution enables immersive remote collaboration with real-time 3D human animations.",
+    desc: "從相關技能寫",
+    duration: "Sep. 2022 - Aug. 2024",
+
+    highlights: [
+      "Developed a multi-user 3D AR teleconference application based on a client-server architecture.",
+      "Designed a new animation pipeline, reducing server communication payload by **99%**.",
+    ],
     href: "",
     texture: "/assets/image/project/project3.mp4",
     logoStyle: {
@@ -112,7 +140,6 @@ export const projectsInfo = [
       border: "0.2px solid rgba(208, 213, 221, 1)",
       boxShadow: "0px 0px 60px 0px rgba(35, 131, 96, 0.3)",
     },
-    spotlight: "/assets/spotlight3.png",
     tags: [
       {
         id: 1,
@@ -123,26 +150,6 @@ export const projectsInfo = [
         id: 2,
         name: "C#",
         path: "/assets/icon/csharp.png",
-      },
-    ],
-  },
-  {
-    title: "Traditional Chinese Customer Service Chatbot",
-    desc: "Developed during my time at E.Sun Commercial Bank, this advanced chatbot utilizes Large Language Models (LLMs) and Retrieval Augmented Generation (RAG) to provide accurate financial information and customer support in Traditional Chinese.",
-    href: "",
-    texture: "/assets/image/project/project4.mp4",
-    logo: "/assets/project-logo4.png",
-    logoStyle: {
-      backgroundColor: "#0E1F38",
-      border: "0.2px solid #0E2D58",
-      boxShadow: "0px 0px 60px 0px #2F67B64D",
-    },
-    spotlight: "/assets/spotlight4.png",
-    tags: [
-      {
-        id: 1,
-        name: "Python",
-        path: "/assets/icon/python.png",
       },
     ],
   },

@@ -50,7 +50,7 @@ function Hero(props) {
             <Leva hidden />
             <ConstrainedOrbitControls cameraPosition={objectConfigs.cameraPosition} isMobile={props.isMobile} />
             {/* <OrbitControls /> */}
-            <TimeBasedLighting />
+            <TimeBasedLighting lightMode={props.lightMode}/>
             <Room objectConfigs={objectConfigs} />
             <group>
               <Guitar
@@ -58,7 +58,7 @@ function Hero(props) {
                 position={objectConfigs.guitarPosition}
                 rotation={[0, Math.PI / 6, 0]}
               />
-              <InteractiveLogos objectConfigs={objectConfigs} />
+              <InteractiveLogos objectConfigs={objectConfigs} lightMode={props.lightMode}/>
               <Mac scale={objectConfigs.macScale} position={objectConfigs.macPosition} rotation={[0, Math.PI, 0]} />
               <Screen
                 isMobile={props.isMobile}

@@ -7,7 +7,6 @@ import { Float } from "@react-three/drei";
 import PythonLogo from "../components/PythonLogo.jsx";
 import ReactLogo from "../components/ReactLogo.jsx";
 import CppLogo from "../components/CppLogo.jsx";
-import { checkNightTime } from "./TimeBasedLighting";
 import { Vector3 } from "three";
 import {
   horizontalPosterPath,
@@ -94,7 +93,7 @@ export const Screen = (props) => {
 
     if (activeIndex === index) {
       // Second click on the same mesh
-      props.setActiveSection(sections[index].name);
+      props.setActiveSection([sections[index].name, 0]);
       setActiveIndex(null);
     } else {
       // First click or clicked different mesh
@@ -116,7 +115,7 @@ export const Screen = (props) => {
           position={section.position}
           onClick={(e) => {
             if (props.isMobile) {
-              props.setActiveSection(sections[index].name);
+              props.setActiveSection([sections[index].name, 0]);
               return;
             }
             handleSectionClick(index, e);
@@ -153,18 +152,21 @@ export const InteractiveLogos = (props) => {
             <CppLogo
               scale={objectConfigs.cppLogoScale * objectConfigs.logoScale}
               position={objectConfigs.cppLogoPosition}
+              lightMode={props.lightMode}
             />
           </Float>
           <Float speed={1} floatIntensity={1} rotationIntensity={0.5}>
             <ReactLogo
               scale={objectConfigs.reactLogoScale * objectConfigs.logoScale}
               position={objectConfigs.reactLogoPosition}
+              lightMode={props.lightMode}
             />
           </Float>
           <Float speed={1} floatIntensity={1} rotationIntensity={0.5}>
             <PythonLogo
               scale={objectConfigs.pythonLogoScale * objectConfigs.logoScale}
               position={objectConfigs.pythonLogoPosition}
+              lightMode={props.lightMode}
             />
           </Float>
         </group>
@@ -172,22 +174,12 @@ export const InteractiveLogos = (props) => {
     </>
   );
 };
-export const Posters = () => {
+export const Posters = (props) => {
   const Poster = (props) => {
-    const [isNightTime, setIsNightTime] = useState(0);
     const [dimensions, setDimensions] = useState({ width: 1, height: 1 });
     const [position, setPosition] = useState([0, 0, 0]);
-    const [scale, setScale] = useState([1, 1, 1]);
 
     const texture = useTexture(props.texturePath);
-    useEffect(() => {
-      setIsNightTime(checkNightTime());
-      const intervalId = setInterval(() => {
-        setIsNightTime(checkNightTime());
-      }, 60000);
-
-      return () => clearInterval(intervalId);
-    }, []);
 
     useEffect(() => {
       // Calculate the dimensions and position of the poster based on the texture size
@@ -211,10 +203,9 @@ export const Posters = () => {
 
         setPosition([centerX, centerY, centerZ]);
         setDimensions({ width, height });
-        setScale([width, height, 0.05]);
       }
     }, [texture]);
-
+    if (!texture || !texture.image) return null;
     return (
       <group position={position} {...props}>
         {/* Frame */}
@@ -230,7 +221,7 @@ export const Posters = () => {
             map={texture}
             emissive={"#fff"}
             emissiveMap={texture}
-            emissiveIntensity={isNightTime * 2}
+            emissiveIntensity={!props.lightMode * 2}
           />
         </mesh>
       </group>

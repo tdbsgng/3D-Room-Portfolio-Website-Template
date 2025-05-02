@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { aboutMeInfo } from "../constants/info";
 const NavItems = ({ sectionsName, setActiveSection }) => {
   return (
     <ul className="nav-ul">
@@ -8,8 +9,9 @@ const NavItems = ({ sectionsName, setActiveSection }) => {
           key={name}
           className="nav-li"
           onClick={() => {
-            setActiveSection(name);
-          }}>
+            setActiveSection([name, 0]);
+          }}
+        >
           <button className="nav-li_a">{name}</button>
         </li>
       ))}
@@ -17,7 +19,7 @@ const NavItems = ({ sectionsName, setActiveSection }) => {
   );
 };
 
-const Navbar = ({ sectionsName, setActiveSection }) => {
+const Navbar = ({ sectionsName, setActiveSection, setLightMode }) => {
   const [isOpen, setOpen] = useState(false);
   const toggleMenu = () => setOpen(!isOpen);
   const closeMenu = () => setOpen(false);
@@ -25,13 +27,17 @@ const Navbar = ({ sectionsName, setActiveSection }) => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-neutral-900 bg-opacity-95 shadow-lg ">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center py-5 mx-auto c-space">
-          <a href="/" className="text-neutral-400 font-bold text-3xl hover:text-purple-400 transition-colors">
-            Howard
-          </a>
+          <button
+            className="text-neutral-400 font-bold text-3xl hover:text-purple-400 transition-colors"
+            onClick={() => setLightMode((prev) => !prev)}
+          >
+            {aboutMeInfo.firstName}
+          </button>
           <button
             onClick={toggleMenu}
             className="text-neutral-400 hover:text-white focus:outline-none sm:hidden flex"
-            aria-label="Toggle menu">
+            aria-label="Toggle menu"
+          >
             {isOpen ? <X /> : <Menu />}
           </button>
 
@@ -40,7 +46,7 @@ const Navbar = ({ sectionsName, setActiveSection }) => {
           </nav>
         </div>
       </div>
-      <div className={`nav-sidebar ${isOpen ? 'max-h-screen' : 'max-h-0'}`}>
+      <div className={`nav-sidebar ${isOpen ? "max-h-screen" : "max-h-0"}`}>
         <nav className="p-5">
           <NavItems onClick={closeMenu} sectionsName={sectionsName} setActiveSection={setActiveSection} />
         </nav>

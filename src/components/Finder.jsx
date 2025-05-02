@@ -8,16 +8,19 @@ const Finder = (props) => {
   const [showFullScreen, setShowFullScreen] = useState(false);
   const windowRef = useRef(null);
   const navigationItems = ["About Me", "Education", "Projects", "Experience"];
+  
   useEffect(() => {
+    console.log("aaa");
     if (windowRef.current) {
-    windowRef.current.scrollTo(0, 0);
+      windowRef.current.scrollTo(0, 0);
     }
   }, [props.activeSection]);
+  
   // ESC key event listener
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        props.setActiveSection("");
+        props.setActiveSection(["", 0]);
       }
     };
 
@@ -45,16 +48,15 @@ const Finder = (props) => {
     </svg>
   );
 
-  // 竖向侧边栏项目组件
   const SidebarItem = ({ sectionName }) => {
-    const isActive = props.activeSection === sectionName;
+    const isActive = props.activeSection[0] === sectionName;
 
     return (
       <button
         className={`flex items-center space-x-2 w-full px-2 py-2 rounded-lg transition-colors duration-200 ${
           isActive ? "bg-gray-700" : "hover:bg-gray-700/50"
         }`}
-        onClick={() => props.setActiveSection(sectionName)}
+        onClick={() => props.setActiveSection([sectionName, 0])}
       >
         <FolderIcon size={16} className="text-blue-500" />
         <span className="font-semibold text-base">{sectionName}</span>
@@ -63,14 +65,14 @@ const Finder = (props) => {
   };
 
   const BookmarkItem = ({ sectionName }) => {
-    const isActive = props.activeSection === sectionName;
+    const isActive = props.activeSection[0] === sectionName;
 
     return (
       <button
         className={`flex items-center justify-center space-x-1 px-1 py-2 rounded-t-lg transition-colors duration-200 w-full overflow-hidden ${
           isActive ? "bg-gray-700 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700/70 hover:text-white"
         }`}
-        onClick={() => props.setActiveSection(sectionName)}
+        onClick={() => props.setActiveSection([sectionName, 0])}
       >
         <FolderIcon size={14} className="text-blue-500 flex-shrink-0" />
         <span className={`font-medium ${props.isMobile ? "text-xs" : "text-sm"} truncate`}>{sectionName}</span>
@@ -82,18 +84,18 @@ const Finder = (props) => {
   const shouldShowSidebar = !isFullscreen && !props.isMobile;
 
   return (
-    props.activeSection !== "" && (
+    props.activeSection[0] !== "" && (
       <div
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
         onClick={(e) => {
           if (e.target === e.currentTarget) {
-            props.setActiveSection("");
+            props.setActiveSection(["", 0]);
           }
         }}
       >
         {/* Floating window container - adjusts based on fullscreen state */}
         <div
-          className={`${isFullscreen ? "w-full h-full" : "w-[95%] h-[95%]"} flex flex-col bg-gray-900 text-white rounded-lg border border-gray-700 shadow-2xl`}
+          className={`${isFullscreen ? "w-full h-full" : "w-[95%] h-[95%]"} flex flex-col bg-gray-900 text-white rounded-lg overflow-hidden border border-gray-700 shadow-2xl`}
         >
           {/* Title bar */}
           <div className="bg-gray-800 p-3 flex items-center relative">
@@ -103,7 +105,7 @@ const Finder = (props) => {
               <div
                 className="w-3 h-3 rounded-full bg-red-500 cursor-pointer hover:opacity-80 relative flex items-center justify-center"
                 onClick={() => {
-                  props.setActiveSection("");
+                  props.setActiveSection(["", 0]);
                   setShowClose(false);
                   setIsFullscreen(!isFullscreen);
                 }}
@@ -118,7 +120,7 @@ const Finder = (props) => {
               <div
                 className="w-3 h-3 rounded-full bg-yellow-500 cursor-pointer hover:opacity-80 relative flex items-center justify-center"
                 onClick={() => {
-                  props.setActiveSection("");
+                  props.setActiveSection(["", 0]);
                   setShowHide(false);
                 }}
                 title="Minimize window"
@@ -144,7 +146,7 @@ const Finder = (props) => {
             </div>
 
             {/* Title - Centered regardless of other elements */}
-            <div className="w-full text-center font-semibold">{props.activeSection}</div>
+            <div className="w-full text-center font-semibold">{props.activeSection[0]}</div>
           </div>
           {/* bookmarks */}
           {shouldShowBookmarks && (
@@ -174,8 +176,8 @@ const Finder = (props) => {
             )}
 
             {/* Content area */}
-            <div className="flex-1 bg-gray-900 overflow-y-auto p-4 flex lg:items-center justify-center" ref={windowRef}>
-              {props.sectionsContent[props.activeSection]}
+            <div className="flex-1 bg-gray-900 overflow-y-auto overflow-x-hidden py-10 lg:py-0 flex lg:items-center" ref={windowRef}>
+              {props.sectionsContent[props.activeSection[0]]}
             </div>
           </div>
         </div>

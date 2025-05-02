@@ -2,7 +2,6 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useRef, useState, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { checkNightTime } from './TimeBasedLighting';
 const PythonLogo = ({ ...props }) => {
   const { nodes } = useGLTF('models/python.glb');
   const groupRef = useRef();
@@ -14,17 +13,7 @@ const PythonLogo = ({ ...props }) => {
   const [currentPosition, setCurrentPosition] = useState(props.position || [0, 0, 0]);
   const [lightIntensity, setLightIntensity] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false); // New state to track animation status
-  const [isNightTime, setIsNightTime] = useState(false);
 
-  useEffect(() => {
-    setIsNightTime(checkNightTime());
-
-    const intervalId = setInterval(() => {
-      setIsNightTime(checkNightTime());
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
   // Standard rotation animation
   useGSAP(() => {
     gsap.timeline({ repeat: -1, repeatDelay: 0.5 }).to(groupRef.current.rotation, {
@@ -146,7 +135,7 @@ const PythonLogo = ({ ...props }) => {
         position={currentPosition}
         intensity={lightIntensity}
         distance={10}
-        color={isNightTime ? '#00BFFF' : '#9933FF'}
+        color={props.lightMode ? '#00BFFF' : '#9933FF'}
       />
       <spotLight
         ref={spotLightRef}
@@ -155,7 +144,7 @@ const PythonLogo = ({ ...props }) => {
         angle={0.6}
         penumbra={0.5}
         distance={15}
-        color={isNightTime ? '#00BFFF' : '#BB33FF'}
+        color={props.lightMode ? '#00BFFF' : '#BB33FF'}
         castShadow
         target-position={currentPosition}
       />

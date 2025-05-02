@@ -13,3 +13,7 @@ https://sketchfab.com/3d-models/acoustic-guitar-402aa42f0faa4845878cf005e66a1046
 https://sketchfab.com/3d-models/mac-os-2013-2017-macbook-69078d4119eb45f195656f1737dc605b
 ### Speakers
 https://sketchfab.com/3d-models/marshall-bluetooth-speaker-1516a73439cb4e4aad74df56fada7cdc
+### Projector screen
+https://sketchfab.com/3d-models/projector-screen-7mb-cac0e255058348558715109b97697e07
+## Info
+Can use \*\*bold\*\* to make something in your project highlights **bold**

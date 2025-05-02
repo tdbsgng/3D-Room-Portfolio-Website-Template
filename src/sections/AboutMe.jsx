@@ -1,6 +1,6 @@
-import { aboutMeInfo } from '../constants/info.js';
-import { useRef, useState, useEffect } from 'react';
-import Globe from 'react-globe.gl';
+import { aboutMeInfo } from "../constants/info.js";
+import { useRef, useState, useEffect } from "react";
+import Globe from "react-globe.gl";
 
 const AboutMe = () => {
   const [copied, setCopied] = useState(false);
@@ -14,21 +14,23 @@ const AboutMe = () => {
   }, []);
 
   return (
-    <section className="c-space my-5" id="about">
-      <div className="grid xl:grid-cols-3 grid-cols-1 gap-5 h-full">
-        <div className="col-span-1 xl:row-span-3 order-1">
+    <section className="c-space h-fit " id="about">
+      <div className="grid lg:grid-cols-3 lg:grid-rows-1 grid-cols-1 gap-5 ">
+        <div className="col-span-1 lg:row-span-1">
           <div className="grid-container">
             <img src={aboutMeInfo.imagePath.intro} alt="grid-1" className="w-full h-[240px] object-contain" />
 
             <div>
-              <p className="grid-headtext">Hi, I'm {aboutMeInfo.name} </p>
+              <p className="grid-headtext">
+                {`${aboutMeInfo.firstName} ${aboutMeInfo.lastName}（${aboutMeInfo.aka}）`}{" "}
+              </p>
               <p className="grid-subtext">{aboutMeInfo.content.intro}</p>
             </div>
           </div>
         </div>
 
         {/* Second section - Tech Stack */}
-        <div className="col-span-1 xl:row-span-3 order-2">
+        <div className="col-span-1 lg:row-span-1">
           <div className="grid-container">
             <img src={aboutMeInfo.imagePath.techStack} alt="grid-2" className="w-full h-[240px]  object-contain" />
 
@@ -39,7 +41,7 @@ const AboutMe = () => {
           </div>
         </div>
 
-        <div className="col-span-1 xl:row-span-3 order-4 xl:order-3">
+        <div className="col-span-1 lg:row-span-1">
           <div className="grid-container">
             <div className="rounded-3xl w-full h-[240px] flex justify-center items-center">
               <Globe
@@ -58,7 +60,7 @@ const AboutMe = () => {
                     lat: aboutMeInfo.location.lat,
                     lng: aboutMeInfo.location.lng,
                     text: aboutMeInfo.location.city,
-                    color: 'white',
+                    color: "white",
                   },
                 ]}
               />
@@ -75,14 +77,16 @@ const AboutMe = () => {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 5000);
                     }}
-                    className="p-1">
+                    className="p-1"
+                  >
                     {copied ? (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="#22c55e"
-                        className="w-4 h-4">
+                        className="w-4 h-4"
+                      >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     ) : (
@@ -91,7 +95,8 @@ const AboutMe = () => {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        className="w-4 h-4">
+                        className="w-4 h-4"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -109,7 +114,7 @@ const AboutMe = () => {
                         <a href={link} target="_blank" rel="noopener noreferrer" className="social-icon">
                           <img src={`/assets/icon/${name}.svg`} alt={name} className="w-1/2 h-1/2" />
                         </a>
-                      ),
+                      )
                   )}
                 </div>
               </div>

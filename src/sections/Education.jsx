@@ -2,7 +2,7 @@ import { educationInfo } from "../constants/info.js";
 
 const Education = () => {
   return (
-    <section className="c-space my-10" id="education">
+    <section className="c-space w-full h-full py-10 overflow-auto" id="education">
       <div className="w-full text-white-600 ">
         <div className="education-container w-full">
           <div className="education-content">
@@ -15,15 +15,11 @@ const Education = () => {
                     </div>
                     <div className="education-content_bar" />
                   </div>
-                  <div className="sm:p-5 px-2.5 py-5">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-bold text-white-800">{item.name}</p>
-                        <p className="text-sm">{item.pos}</p>
-                      </div>
-                      <p className="text-sm text-right whitespace-nowrap">{item.duration}</p>
-                    </div>
-                    <ul className="list-disc list-inside mt-3 group-hover:text-white transition-all ease-in-out duration-500">
+                  <div className="sm:p-5 px-2.5 py-5 flex flex-col">
+                    <p className="font-bold text-white-800">{item.name}</p>
+                    <p className="text-sm">{item.pos}</p>
+                    <p className="text-sm mb-5 ml-auto">{item.duration}</p> 
+                    <ul className="list-disc list-inside group-hover:text-white transition-all ease-in-out duration-500 tracking-wide">
                       {item.highlights.map((point, index) => (
                         <li key={index}>{point}</li>
                       ))}

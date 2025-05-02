@@ -15,12 +15,12 @@ const LIGHTNING_BLUE_WHITE_COLORS = [
 // Preloaded geometries
 const TRAIL_GEOMETRY = new THREE.SphereGeometry(0.01, 32, 32);
 
-// Firework trail component with isNightTime parameter
-const FireworkTrail = ({ position, endPosition, duration = 0.5, isNightTime = false }) => {
+// Firework trail component with lightMode parameter
+const FireworkTrail = ({ position, endPosition, duration = 0.5, lightMode = false }) => {
   const ref = useRef();
 
-  // Select color array based on isNightTime parameter
-  const colorArray = isNightTime ? LIGHTNING_BLUE_WHITE_COLORS : PURPLE_GRAY_COLORS;
+  // Select color array based on lightMode parameter
+  const colorArray = lightMode ? LIGHTNING_BLUE_WHITE_COLORS : PURPLE_GRAY_COLORS;
 
   // Precompute values
   const trailData = useMemo(
@@ -78,13 +78,13 @@ const FireworkTrail = ({ position, endPosition, duration = 0.5, isNightTime = fa
 };
 
 // Advanced firework explosion component with central light
-const Firework = ({ position, trailCount = 500, isNightTime = false }) => {
+const Firework = ({ position, trailCount = 500, lightMode = false }) => {
   // Reference for the central light
   const lightRef = useRef();
   const groupRef = useRef();
 
-  // Select color array based on isNightTime parameter
-  const colorArray = isNightTime ? LIGHTNING_BLUE_WHITE_COLORS : PURPLE_GRAY_COLORS;
+  // Select color array based on lightMode parameter
+  const colorArray = lightMode ? LIGHTNING_BLUE_WHITE_COLORS : PURPLE_GRAY_COLORS;
 
   // Precompute data for the light
   const lightData = useMemo(
@@ -113,13 +113,13 @@ const Firework = ({ position, trailCount = 500, isNightTime = false }) => {
           position={position}
           endPosition={endPos}
           duration={Math.random()*5}
-          isNightTime={isNightTime}
+          lightMode={lightMode}
         />,
       );
     }
 
     return { trails: trailsArray };
-  }, [position, trailCount, isNightTime]);
+  }, [position, trailCount, lightMode]);
 
   // Handle light animation with GSAP
   useEffect(() => {
