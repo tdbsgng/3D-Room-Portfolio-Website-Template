@@ -29,7 +29,6 @@ const CppLogo = (props) => {
     if (isRotating && meshRef.current) {
       meshRef.current.rotation.z += rotationSpeed;
 
-      // 動態調整光源亮度
       if (lightRef.current) {
         lightRef.current.intensity = rotationSpeed * 1000;
       }

@@ -1,15 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import { ZoomIn, ZoomOut, Maximize2, Minimize2, ChevronLeft, ChevronRight } from "lucide-react";
-import { useMediaQuery } from "react-responsive";
 
-const MediaDisplay = ({ project }) => {
+const MediaDisplay = (props) => {
   const containerRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
-  const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+  useEffect(() => {
+    setCurrentMediaIndex(0);
+    setZoomLevel(1);
+  }, [props.project]);
 
-  // Determine media type
   const getMediaType = (url) => {
     if (!url) return "unknown";
     const extension = url.split(".").pop().toLowerCase();
@@ -18,12 +19,10 @@ const MediaDisplay = ({ project }) => {
     return "unknown";
   };
 
-  // Get current media
-  const mediaFiles = project.mediaFiles || [];
+  const mediaFiles = props.project.mediaFiles || [];
   const currentMedia = mediaFiles[currentMediaIndex] || null;
   const mediaType = currentMedia ? getMediaType(currentMedia) : "unknown";
 
-  // Handle fullscreen
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       containerRef.current
@@ -38,7 +37,6 @@ const MediaDisplay = ({ project }) => {
     }
   };
 
-  // Handle zoom
   const handleZoom = (direction) => {
     if (direction === "in" && zoomLevel < 3) {
       setZoomLevel((prevZoom) => prevZoom + 0.25);
@@ -47,7 +45,6 @@ const MediaDisplay = ({ project }) => {
     }
   };
 
-  // Handle navigation
   const navigateMedia = (direction) => {
     setCurrentMediaIndex((prevIndex) => {
       if (direction === "next") {
@@ -56,12 +53,9 @@ const MediaDisplay = ({ project }) => {
         return prevIndex === 0 ? mediaFiles.length - 1 : prevIndex - 1;
       }
     });
-
-    // Reset zoom when changing media
     setZoomLevel(1);
   };
 
-  // Listen for fullscreen change events
   useEffect(() => {
     const handleFullscreenChange = () => {
       if (!document.fullscreenElement && isFullscreen) {
@@ -99,7 +93,7 @@ const MediaDisplay = ({ project }) => {
       </div>
 
       {/* Controls Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-3 flex justify-between items-center">
+      <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2 flex justify-between items-center">
         {/* Left side controls */}
         <div className="flex items-center gap-2">
           <button
@@ -143,7 +137,7 @@ const MediaDisplay = ({ project }) => {
             <ZoomIn className="w-5 h-5" />
           </button>
 
-          {!isMobile && (
+          {!props.isMobile && (
             <button
               onClick={toggleFullscreen}
               className="text-white-600 hover:text-white-400 p-1 rounded-full bg-transparent ml-2"

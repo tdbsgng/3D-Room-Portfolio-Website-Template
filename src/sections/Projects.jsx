@@ -1,30 +1,33 @@
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { projectsInfo } from "../constants/info.js";
+import { projectsInfo } from "../constants/Info.js";
 import MediaDisplay from "../components/MediaDisplay.jsx";
 
 const projectCount = projectsInfo.length;
 
-// Projects component with the new media display functionality
 const Projects = (props) => {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
-
+  const media = projectsInfo.map((project, index) => {
+    return <MediaDisplay project={project} isMobile={props.isMobile} />;
+  });
   const handleNavigation = (direction) => {
     setSelectedProjectIndex((prevIndex) => {
-      let returnIndex;
       if (direction === "previous") {
-        returnIndex = prevIndex === 0 ? projectCount - 1 : prevIndex - 1;
+        return prevIndex === 0 ? projectCount - 1 : prevIndex - 1;
       } else {
-        returnIndex = prevIndex === projectCount - 1 ? 0 : prevIndex + 1;
+        return prevIndex === projectCount - 1 ? 0 : prevIndex + 1;
       }
-      props.setActiveSection(["Projects", returnIndex]);
-      return returnIndex;
     });
   };
 
+  useEffect(() => {
+    if (props.windowRef.current) {
+      props.windowRef.current.scrollTo(0, 0);
+    }
+  }, [selectedProjectIndex]);
   useGSAP(() => {
     gsap.fromTo(`.animatedText`, { opacity: 0 }, { opacity: 1, duration: 1, stagger: 0.2, ease: "power2.inOut" });
   }, [selectedProjectIndex]);
@@ -34,9 +37,8 @@ const Projects = (props) => {
   return (
     <section className="c-space h-fit flex items-center justify-center" id="projects">
       <div className="grid xl:grid-cols-2 grid-cols-1 w-full gap-6 px-4">
-        {/* text */}
+        {/* Project Info */}
         <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200 rounded-xl overflow-hidden">
-          {/* Spotlight image with lower z-index */}
           <div className="absolute top-0 right-0 z-0">
             <img src="/assets/image/spotlight.png" alt="spotlight" className="w-full h-auto object-cover" />
           </div>
@@ -80,7 +82,7 @@ const Projects = (props) => {
             </a>
           </div>
 
-          {/* Navigation buttons with higher z-index */}
+          {/* Navigation buttons*/}
           <div className="flex justify-between items-center mt-auto relative z-20">
             <button className="arrow-btn relative" onClick={() => handleNavigation("previous")}>
               <ArrowLeft className="w-4 h-4 text-purple-500" />
@@ -97,7 +99,7 @@ const Projects = (props) => {
         </div>
         {/* media */}
         <div className="border border-black-300 bg-black-200 rounded-xl relative overflow-hidden">
-          <MediaDisplay project={currentProject} />
+          {media[selectedProjectIndex]}
         </div>
       </div>
     </section>

@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FolderIcon, X, Minus } from "lucide-react";
 
+import AboutMe from "../sections/AboutMe.jsx";
+import Education from "../sections/Education.jsx";
+import Projects from "../sections/Projects.jsx";
+import Experience from "../sections/Experience.jsx";
+
 const Finder = (props) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showClose, setShowClose] = useState(false);
@@ -8,30 +13,33 @@ const Finder = (props) => {
   const [showFullScreen, setShowFullScreen] = useState(false);
   const windowRef = useRef(null);
   const navigationItems = ["About Me", "Education", "Projects", "Experience"];
-  
+
+  const sectionsContent = {
+    "About Me": <AboutMe />,
+    Education: <Education />,
+    Projects: <Projects setActiveSection={props.setActiveSection} isMobile={props.isMobile} windowRef={windowRef} />,
+    Experience: <Experience />,
+  };
   useEffect(() => {
     if (windowRef.current) {
       windowRef.current.scrollTo(0, 0);
     }
   }, [props.activeSection]);
-  
-  // ESC key event listener
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        props.setActiveSection(["", 0]);
+        props.setActiveSection("");
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // Clean up event listener
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
-  // Custom fullscreen icon component
   const FullscreenIcon = ({ isFullscreen = true }) => (
     <svg width={10} height={10} viewBox="0 0 10 10" className="text-green-900 absolute">
       {isFullscreen ? (
@@ -48,14 +56,14 @@ const Finder = (props) => {
   );
 
   const SidebarItem = ({ sectionName }) => {
-    const isActive = props.activeSection[0] === sectionName;
+    const isActive = props.activeSection === sectionName;
 
     return (
       <button
         className={`flex items-center space-x-2 w-full px-2 py-2 rounded-lg transition-colors duration-200 ${
           isActive ? "bg-gray-700" : "hover:bg-gray-700/50"
         }`}
-        onClick={() => props.setActiveSection([sectionName, 0])}
+        onClick={() => props.setActiveSection(sectionName)}
       >
         <FolderIcon size={16} className="text-blue-500" />
         <span className="font-semibold text-base">{sectionName}</span>
@@ -64,14 +72,14 @@ const Finder = (props) => {
   };
 
   const BookmarkItem = ({ sectionName }) => {
-    const isActive = props.activeSection[0] === sectionName;
+    const isActive = props.activeSection === sectionName;
 
     return (
       <button
         className={`flex items-center justify-center space-x-1 px-1 py-2 rounded-t-lg transition-colors duration-200 w-full overflow-hidden ${
           isActive ? "bg-gray-700 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700/70 hover:text-white"
         }`}
-        onClick={() => props.setActiveSection([sectionName, 0])}
+        onClick={() => props.setActiveSection(sectionName)}
       >
         <FolderIcon size={14} className="text-blue-500 flex-shrink-0" />
         <span className={`font-medium ${props.isMobile ? "text-xs" : "text-sm"} truncate`}>{sectionName}</span>
@@ -83,30 +91,36 @@ const Finder = (props) => {
   const shouldShowSidebar = !isFullscreen && !props.isMobile;
 
   return (
-    props.activeSection[0] !== "" && (
+    props.activeSection !== "" && (
       <div
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
         onClick={(e) => {
           if (e.target === e.currentTarget) {
-            props.setActiveSection(["", 0]);
+            props.setActiveSection("");
+            setIsFullscreen(false);
+            setShowClose(false);
+            setShowHide(false);
+            setShowFullScreen(false);
           }
         }}
       >
-        {/* Floating window container - adjusts based on fullscreen state */}
+        {/* Floating window container  */}
         <div
-          className={`${isFullscreen ? "w-full h-full" : "w-[95%] h-[95%]"} flex flex-col bg-gray-900 text-white rounded-lg overflow-hidden border border-gray-700 shadow-2xl`}
+          className={`${
+            isFullscreen ? "w-full h-full" : "w-[95%] h-[95%]"
+          } flex flex-col bg-gray-900 text-white rounded-lg overflow-hidden border border-gray-700 shadow-2xl`}
         >
           {/* Title bar */}
           <div className="bg-gray-800 p-3 flex items-center relative">
-            {/* Control buttons - Positioned absolutely to not affect title centering */}
+            {/* Control buttons - */}
             <div className="absolute left-3 flex space-x-2 z-10">
               {/* Red button (close) */}
               <div
                 className="w-3 h-3 rounded-full bg-red-500 cursor-pointer hover:opacity-80 relative flex items-center justify-center"
                 onClick={() => {
-                  props.setActiveSection(["", 0]);
+                  props.setActiveSection("");
                   setShowClose(false);
-                  setIsFullscreen(!isFullscreen);
+                  setIsFullscreen(false);
                 }}
                 title="Close window"
                 onMouseEnter={() => setShowClose(true)}
@@ -119,8 +133,9 @@ const Finder = (props) => {
               <div
                 className="w-3 h-3 rounded-full bg-yellow-500 cursor-pointer hover:opacity-80 relative flex items-center justify-center"
                 onClick={() => {
-                  props.setActiveSection(["", 0]);
+                  props.setActiveSection("");
                   setShowHide(false);
+                  setIsFullscreen(false);
                 }}
                 title="Minimize window"
                 onMouseEnter={() => setShowHide(true)}
@@ -144,8 +159,8 @@ const Finder = (props) => {
               </div>
             </div>
 
-            {/* Title - Centered regardless of other elements */}
-            <div className="w-full text-center font-semibold">{props.activeSection[0]}</div>
+            {/* Title */}
+            <div className="w-full text-center font-semibold">{props.activeSection}</div>
           </div>
           {/* bookmarks */}
           {shouldShowBookmarks && (
@@ -176,7 +191,7 @@ const Finder = (props) => {
 
             {/* Content area */}
             <div className="flex-1 bg-gray-900 overflow-y-auto overflow-x-hidden h-full py-10" ref={windowRef}>
-              {props.sectionsContent[props.activeSection[0]]}
+              {sectionsContent[props.activeSection]}
             </div>
           </div>
         </div>

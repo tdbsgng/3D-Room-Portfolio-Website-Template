@@ -1,10 +1,16 @@
-import { aboutMeInfo } from "../constants/info.js";
+import { aboutMeInfo } from "../constants/Info.js";
 import { useRef, useState, useEffect } from "react";
 import Globe from "react-globe.gl";
 
 const AboutMe = () => {
   const [copied, setCopied] = useState(false);
   const globeRef = useRef();
+  const [skillsIndex, setSkillsIndex] = useState(0);
+
+  const cycleSkills = () => {
+    setSkillsIndex((prevIndex) => (prevIndex + 1) % aboutMeInfo.skills.length);
+  };
+
   useEffect(() => {
     if (globeRef.current) {
       if (globeRef.current.controls()) {
@@ -14,8 +20,9 @@ const AboutMe = () => {
   }, []);
 
   return (
-    <section className="c-space h-fit " id="about">
-      <div className="grid lg:grid-cols-3 lg:grid-rows-1 grid-cols-1 gap-5 ">
+    <section className="c-space h-fit" id="about">
+      <div className="grid lg:grid-cols-3 lg:grid-rows-1 grid-cols-1 gap-5">
+        {/* Intro */}
         <div className="col-span-1 lg:row-span-1">
           <div className="grid-container">
             <img src={aboutMeInfo.imagePath.intro} alt="grid-1" className="w-full h-[240px] object-contain" />
@@ -29,18 +36,46 @@ const AboutMe = () => {
           </div>
         </div>
 
-        {/* Second section - Tech Stack */}
+        {/* Skills */}
         <div className="col-span-1 lg:row-span-1">
           <div className="grid-container">
-            <img src={aboutMeInfo.imagePath.techStack} alt="grid-2" className="w-full h-[240px]  object-contain" />
+            <div
+              className="w-full h-[240px] flex justify-center items-center cursor-pointer overflow-hidden"
+              onClick={cycleSkills}
+            >
+              <div className="relative w-full h-full flex justify-center items-center">
+                {aboutMeInfo.skills.map((skill, index) => {
+                  const relativePosition =
+                    (index - skillsIndex + aboutMeInfo.skills.length) % aboutMeInfo.skills.length;
+
+                  return (
+                    <div
+                      key={index}
+                      className="absolute rounded-xl border-2 border-purple-700 bg-gradient-to-b from-gray-700 to-gray-900 shadow-lg p-4 flex items-center justify-center transition-all duration-500"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        transform: `translateX(${relativePosition * 30 - 30}px) scale(${
+                          1 - Math.min(relativePosition, 3) * 0.1
+                        })`,
+                        zIndex: aboutMeInfo.skills.length - relativePosition,
+                        opacity: relativePosition < 5 ? 1 : 0.1,
+                      }}
+                    >
+                      <img src={skill} className="max-w-full max-h-full object-contain" />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
             <div>
-              <p className="grid-headtext">Tech Stack</p>
-              <p className="grid-subtext">{aboutMeInfo.content.techStack}</p>
+              <p className="grid-headtext">Skills</p>
+              <p className="grid-subtext">{aboutMeInfo.content.skills}</p>
             </div>
           </div>
         </div>
-
+        {/* Contact */}
         <div className="col-span-1 lg:row-span-1">
           <div className="grid-container">
             <div className="rounded-3xl w-full h-[240px] flex justify-center items-center">

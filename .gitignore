@@ -1,2 +1,11 @@
 /dist/
 /node_modules
+.*/ 
+/src/constants/MyInfo.js
+/src/constants/SampleInfo.js
+/public/assets/image/
+/public/assets/projects/
+/public/assets/icon/ntu.png
+/public/assets/icon/nthu.png
+/public/assets/icon/jorjin.png
+/public/assets/icon/esun.png

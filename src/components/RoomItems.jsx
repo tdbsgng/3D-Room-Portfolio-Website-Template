@@ -1,6 +1,5 @@
 import { useTexture } from "@react-three/drei";
 import { useMemo, useState, useRef, useEffect } from "react";
-import { useThree } from "@react-three/fiber";
 import { useGLTF, Clone } from "@react-three/drei";
 import { Float } from "@react-three/drei";
 
@@ -8,18 +7,14 @@ import PythonLogo from "../components/PythonLogo.jsx";
 import ReactLogo from "../components/ReactLogo.jsx";
 import CppLogo from "../components/CppLogo.jsx";
 import { Vector3 } from "three";
-import {
-  horizontalPosterPath,
-  verticalPosterPath,
-  horizontalPosterConfigs,
-  verticalPosterConfigs,
-} from "../constants/constants.js";
-export const Room = (props) => {
+import { horizontalPosterPath, verticalPosterPath } from "../constants/Info.js";
+import { roomItemsConfigs } from "../constants/RoomItemsConfigs.js";
+
+export const Room = () => {
   const { scene } = useGLTF("/models/room.glb");
-  const objectConfigs = props.objectConfigs;
   return (
     <group>
-      <Clone object={scene} position={objectConfigs.roomPosition} scale={objectConfigs.roomScale} />
+      <Clone object={scene} position={roomItemsConfigs.room.position} scale={roomItemsConfigs.room.scale} />
       {/* wall patch */}
       <mesh position={[0, 0, -13]} rotation={[0, 0, Math.PI / 2]}>
         <boxGeometry args={[30, 30, 0.01]} />
@@ -54,7 +49,7 @@ export const Mac = (props) => {
       <directionalLight position={[0, 0.1, -5]} intensity={0.5} />
 
       {/* avoid reflection */}
-      <mesh position={[0, 0.22, 0.27]} rotation={[0, 0, 0]}>
+      <mesh position={[0, 0.22, 0.27]}>
         <boxGeometry args={[0.9, 0.05, 0.001]} />
         <meshBasicMaterial color="black" />
       </mesh>
@@ -84,7 +79,6 @@ export const Screen = (props) => {
     { position: [0.7, 0.15, 0.01], name: "Experience" },
   ];
 
-  // This handler is for the background plane to reset the active index
   const handleBackgroundClick = () => {
     setActiveIndex(null);
   };
@@ -93,18 +87,15 @@ export const Screen = (props) => {
     e.stopPropagation();
 
     if (activeIndex === index) {
-      // Second click on the same mesh
-      props.setActiveSection([sections[index].name, 0]);
+      props.setActiveSection(sections[index].name);
       setActiveIndex(null);
     } else {
-      // First click or clicked different mesh
       setActiveIndex(index);
     }
   };
 
   return (
     <group {...props}>
-      {/* Main background mesh with click handler to reset */}
       <mesh ref={mainMeshRef} onClick={handleBackgroundClick}>
         <planeGeometry args={geometryArgs} />
         <meshStandardMaterial map={texture} emissive={"#fff"} emissiveMap={texture} />
@@ -116,7 +107,7 @@ export const Screen = (props) => {
           position={section.position}
           onClick={(e) => {
             if (isTouchDevice) {
-              props.setActiveSection([sections[index].name, 0]);
+              props.setActiveSection(sections[index].name);
               return;
             }
             handleSectionClick(index, e);
@@ -144,29 +135,28 @@ export const Speaker = (props) => {
 };
 
 export const InteractiveLogos = (props) => {
-  const objectConfigs = props.objectConfigs;
   return (
     <>
       <Float speed={1} floatIntensity={1} rotationIntensity={0.5}>
-        <group position={objectConfigs.logoPosition}>
+        <group position={roomItemsConfigs.interactiveLogo.position}>
           <Float speed={1} floatIntensity={1} rotationIntensity={0.5}>
             <CppLogo
-              scale={objectConfigs.cppLogoScale * objectConfigs.logoScale}
-              position={objectConfigs.cppLogoPosition}
+              scale={roomItemsConfigs.cppLogo.scale * roomItemsConfigs.interactiveLogo.scale}
+              position={roomItemsConfigs.cppLogo.position}
               lightMode={props.lightMode}
             />
           </Float>
           <Float speed={1} floatIntensity={1} rotationIntensity={0.5}>
             <ReactLogo
-              scale={objectConfigs.reactLogoScale * objectConfigs.logoScale}
-              position={objectConfigs.reactLogoPosition}
+              scale={roomItemsConfigs.reactLogo.scale * roomItemsConfigs.interactiveLogo.scale}
+              position={roomItemsConfigs.reactLogo.position}
               lightMode={props.lightMode}
             />
           </Float>
           <Float speed={1} floatIntensity={1} rotationIntensity={0.5}>
             <PythonLogo
-              scale={objectConfigs.pythonLogoScale * objectConfigs.logoScale}
-              position={objectConfigs.pythonLogoPosition}
+              scale={roomItemsConfigs.pythonLogo.scale * roomItemsConfigs.interactiveLogo.scale}
+              position={roomItemsConfigs.pythonLogo.position}
               lightMode={props.lightMode}
             />
           </Float>
@@ -181,10 +171,8 @@ export const Posters = () => {
     const [position, setPosition] = useState([0, 0, 0]);
     const [isReady, setIsReady] = useState(false);
 
-    // Load the texture
     const texture = useTexture(props.texturePath);
 
-    // Only calculate dimensions once when the texture loads
     useEffect(() => {
       if (texture && texture.image && !isReady) {
         const imgWidth = texture.image.width;
@@ -216,7 +204,7 @@ export const Posters = () => {
         {/* Poster */}
         <mesh position={[0, 0, 0.026]}>
           <boxGeometry args={[dimensions.width, dimensions.height, 0.2]} />
-          <meshBasicMaterial map={texture} />
+          <meshBasicMaterial map={texture} toneMapped={false} />
         </mesh>
       </group>
     );
@@ -228,16 +216,16 @@ export const Posters = () => {
         <Poster
           key={`v-poster-${index}`}
           texturePath={texturePath}
-          leftTop={verticalPosterConfigs.leftTop[index]}
-          rightTop={verticalPosterConfigs.rightTop[index]}
+          leftTop={roomItemsConfigs.verticalPoster.leftTop[index]}
+          rightTop={roomItemsConfigs.verticalPoster.rightTop[index]}
         />
       ))}
       {horizontalPosterPath.map((texturePath, index) => (
         <Poster
           key={`h-poster-${index}`}
           texturePath={texturePath}
-          leftTop={horizontalPosterConfigs.leftTop[index]}
-          rightTop={horizontalPosterConfigs.rightTop[index]}
+          leftTop={roomItemsConfigs.horizontalPoster.leftTop[index]}
+          rightTop={roomItemsConfigs.horizontalPoster.rightTop[index]}
           rotation={[0, Math.PI / 2, 0]}
         />
       ))}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { aboutMeInfo } from "../constants/info";
+import { aboutMeInfo } from "../constants/Info";
 const NavItems = ({ sectionsName, setActiveSection }) => {
   return (
     <ul className="nav-ul">
@@ -9,7 +9,7 @@ const NavItems = ({ sectionsName, setActiveSection }) => {
           key={name}
           className="nav-li"
           onClick={() => {
-            setActiveSection([name, 0]);
+            setActiveSection(name);
           }}
         >
           <button className="nav-li_a">{name}</button>
