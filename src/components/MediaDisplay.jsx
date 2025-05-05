@@ -1,21 +1,22 @@
 import { useState, useRef, useEffect } from "react";
-import { ZoomIn, ZoomOut, Maximize2, Minimize2, ChevronLeft, ChevronRight } from "lucide-react";
+import { ZoomIn, ZoomOut, Maximize2, Minimize2, ChevronLeft, ChevronRight, Loader } from "lucide-react";
 
 const MediaDisplay = (props) => {
   const containerRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     setCurrentMediaIndex(0);
     setZoomLevel(1);
+    setIsLoading(true);
   }, [props.project]);
 
   const getMediaType = (url) => {
     if (!url) return "unknown";
-    const extension = url.split(".").pop().toLowerCase();
-    if (["mp4", "webm", "ogg", "mov"].includes(extension)) return "video";
-    if (["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(extension)) return "image";
+    if (["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(url.split(".").pop().toLowerCase())) return "image";
     return "unknown";
   };
 
@@ -46,6 +47,7 @@ const MediaDisplay = (props) => {
   };
 
   const navigateMedia = (direction) => {
+    setIsLoading(true);
     setCurrentMediaIndex((prevIndex) => {
       if (direction === "next") {
         return prevIndex === mediaFiles.length - 1 ? 0 : prevIndex + 1;
@@ -54,6 +56,14 @@ const MediaDisplay = (props) => {
       }
     });
     setZoomLevel(1);
+  };
+
+  const handleMediaLoad = () => {
+    setIsLoading(false);
+  };
+
+  const handleMediaError = () => {
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -79,16 +89,27 @@ const MediaDisplay = (props) => {
       >
         {!currentMedia ? (
           <div className="text-white-600 opacity-70">No media available</div>
-        ) : mediaType === "image" ? (
-          <img
-            src={currentMedia}
-            alt={`Project image ${currentMediaIndex + 1}`}
-            className="max-h-full max-w-full object-contain"
-          />
-        ) : mediaType === "video" ? (
-          <video src={currentMedia} controls loop className="max-h-full max-w-full" />
         ) : (
-          <div className="text-white-600 opacity-70">Unsupported media format</div>
+          <>
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 z-10">
+                <Loader className="w-10 h-10 text-purple-500 animate-spin" />
+              </div>
+            )}
+
+            {mediaType === "image" ? (
+              <img
+                src={currentMedia}
+                alt={`Project image ${currentMediaIndex + 1}`}
+                className="max-h-full max-w-full object-contain"
+                onLoad={handleMediaLoad}
+                onError={handleMediaError}
+                style={{ visibility: isLoading ? "hidden" : "visible" }}
+              />
+            ) : (
+              <div className="text-white-600 opacity-70">Unsupported media format</div>
+            )}
+          </>
         )}
       </div>
 

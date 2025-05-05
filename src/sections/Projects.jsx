@@ -10,9 +10,6 @@ const projectCount = projectsInfo.length;
 
 const Projects = (props) => {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
-  const media = projectsInfo.map((project, index) => {
-    return <MediaDisplay project={project} isMobile={props.isMobile} />;
-  });
   const handleNavigation = (direction) => {
     setSelectedProjectIndex((prevIndex) => {
       if (direction === "previous") {
@@ -99,7 +96,11 @@ const Projects = (props) => {
         </div>
         {/* media */}
         <div className="border border-black-300 bg-black-200 rounded-xl relative overflow-hidden">
-          {media[selectedProjectIndex]}
+          <MediaDisplay
+            project={currentProject}
+            selectedProjectIndex={selectedProjectIndex}
+            isMobile={props.isMobile}
+          />
         </div>
       </div>
     </section>
