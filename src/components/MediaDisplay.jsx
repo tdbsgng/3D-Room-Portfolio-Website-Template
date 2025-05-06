@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ZoomIn, ZoomOut, Maximize2, Minimize2, ChevronLeft, ChevronRight, Loader } from "lucide-react";
+import { ZoomIn, ZoomOut, Maximize2, Minimize2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 const MediaDisplay = (props) => {
   const containerRef = useRef(null);
@@ -7,16 +7,25 @@ const MediaDisplay = (props) => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-
+  useEffect(() => {
+    if (mediaFiles[currentMediaIndex] === currentMedia) {
+      setIsLoading(false);
+    }
+  }, [currentMediaIndex]);
   useEffect(() => {
     setCurrentMediaIndex(0);
     setZoomLevel(1);
     setIsLoading(true);
+    if (props.project.mediaFiles[0] === currentMedia) {
+      setIsLoading(false);
+    }
   }, [props.project]);
 
   const getMediaType = (url) => {
     if (!url) return "unknown";
-    if (["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(url.split(".").pop().toLowerCase())) return "image";
+    const extension = url.split(".").pop().toLowerCase();
+    if (["mp4", "webm", "ogg", "mov"].includes(extension)) return "video";
+    if (["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(extension)) return "image";
     return "unknown";
   };
 
@@ -47,6 +56,7 @@ const MediaDisplay = (props) => {
   };
 
   const navigateMedia = (direction) => {
+    if (mediaFiles.length <= 1) return;
     setIsLoading(true);
     setCurrentMediaIndex((prevIndex) => {
       if (direction === "next") {
@@ -56,14 +66,6 @@ const MediaDisplay = (props) => {
       }
     });
     setZoomLevel(1);
-  };
-
-  const handleMediaLoad = () => {
-    setIsLoading(false);
-  };
-
-  const handleMediaError = () => {
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -93,7 +95,7 @@ const MediaDisplay = (props) => {
           <>
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 z-10">
-                <Loader className="w-10 h-10 text-purple-500 animate-spin" />
+                <Loader2 className="w-10 h-10 text-purple-500 animate-spin" />
               </div>
             )}
 
@@ -102,8 +104,20 @@ const MediaDisplay = (props) => {
                 src={currentMedia}
                 alt={`Project image ${currentMediaIndex + 1}`}
                 className="max-h-full max-w-full object-contain"
-                onLoad={handleMediaLoad}
-                onError={handleMediaError}
+                onLoad={() => setIsLoading(false)}
+                onError={() => setIsLoading(false)}
+                style={{ visibility: isLoading ? "hidden" : "visible" }}
+              />
+            ) : mediaType === "video" ? (
+              <video
+                src={currentMedia}
+                className="max-h-full max-w-full object-contain"
+                autoPlay
+                muted
+                loop
+                playsInline
+                onLoadedData={() => setIsLoading(false)}
+                onError={() => setIsLoading(false)}
                 style={{ visibility: isLoading ? "hidden" : "visible" }}
               />
             ) : (
