@@ -3,7 +3,7 @@
 A modern, interactive portfolio website template built with **React and Three.js**, featuring a 3D room and a file-system-style interface to showcase your work. Easily customize your information and generate a personalized website — **no coding required**. 
 
 This repository is a sample version intended for demonstration and ease of use. All content is for illustrative purposes only. Please customize and extend it according to your own needs. Check out a live example at [https://tdbsgng.github.io/](https://tdbsgng.github.io/).
-  ![teaser](public/teaser.gif)
+  ![teaser](public/assets/teaser.gif)
 
 ## 🧩 Features
 
@@ -60,7 +60,7 @@ Make sure the following tools are installed on your system:
   - Source: Deploy from a branch
   - Branch: gh-pages
 
-  ![deploy](public/deploy.png)
+  ![deploy](public/assets/deploy.png)
 
 4. Wait for a few minutes and the website will be deployed at `https://<your-github-username>.github.io`
 
