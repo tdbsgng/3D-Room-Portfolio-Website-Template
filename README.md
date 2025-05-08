@@ -1,10 +1,11 @@
 # 3D Room Portfolio Website Template
 
-A modern, interactive portfolio website template built with **React and Three.js**, featuring a 3D room and a file-system-style interface to showcase your work. Easily customize your information and generate a personalized website — **no coding required**. 
+A modern, interactive portfolio website template built with **React and Three.js**, featuring a 3D room and a file-system-style interface to showcase your work. Easily customize your information and generate a personalized website — **no coding required**.
 
 This repository is a sample version intended for demonstration and ease of use. All content is for illustrative purposes only. Please customize and extend it according to your own needs. Check out a live example at [https://tdbsgng.github.io/](https://tdbsgng.github.io/).
-  ![teaser](public/assets/teaser.gif)
-
+<video width="100%" controls>
+  <source src="public/assets/teaser.mp4" type="video/mp4">
+</video>
 ## 🧩 Features
 
 - **Interactive 3D environment** rendered in real-time.
