@@ -7,18 +7,19 @@ const MediaDisplay = (props) => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [mediaFiles, setMediaFiles] = useState([]);
+  const [currentMedia, setCurrentMedia] = useState("");
   useEffect(() => {
-    if (mediaFiles[currentMediaIndex] === currentMedia) {
-      setIsLoading(false);
-    }
+    if (mediaFiles[currentMediaIndex] === currentMedia) setIsLoading(false);
+    setCurrentMedia(props.project.mediaFiles[currentMediaIndex]);
   }, [currentMediaIndex]);
+
   useEffect(() => {
+    setMediaFiles(props.project.mediaFiles);
+    setCurrentMedia(props.project.mediaFiles[0]);
     setCurrentMediaIndex(0);
     setZoomLevel(1);
-    setIsLoading(true);
-    if (props.project.mediaFiles[0] === currentMedia) {
-      setIsLoading(false);
-    }
+    if (currentMedia !== props.project.mediaFiles[0]) setIsLoading(true);
   }, [props.project]);
 
   const getMediaType = (url) => {
@@ -29,9 +30,6 @@ const MediaDisplay = (props) => {
     return "unknown";
   };
 
-  const mediaFiles = props.project.mediaFiles || [];
-  const currentMedia = mediaFiles[currentMediaIndex] || null;
-  const mediaType = currentMedia ? getMediaType(currentMedia) : "unknown";
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -99,7 +97,7 @@ const MediaDisplay = (props) => {
               </div>
             )}
 
-            {mediaType === "image" ? (
+            {getMediaType(currentMedia) === "image" ? (
               <img
                 src={currentMedia}
                 alt={`Project image ${currentMediaIndex + 1}`}
@@ -108,7 +106,7 @@ const MediaDisplay = (props) => {
                 onError={() => setIsLoading(false)}
                 style={{ visibility: isLoading ? "hidden" : "visible" }}
               />
-            ) : mediaType === "video" ? (
+            ) : getMediaType(currentMedia) === "video" ? (
               <video
                 src={currentMedia}
                 className="max-h-full max-w-full object-contain"

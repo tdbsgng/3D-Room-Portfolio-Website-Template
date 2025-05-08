@@ -15,7 +15,15 @@ const ReactLogo = (props) => {
   const nextFireworkId = useRef(0);
   const reachedTargetHeight = useRef(false);
   const targetHeight = 5;
-
+  useEffect(() => {
+    setFireworks((prev) => [
+      ...prev,
+      {
+        id: -1,
+        position: groupRef.current.position,
+      },
+    ]);
+  }, []);
   const handleClick = () => {
     if (velocity.current === 0) {
       velocity.current = acceleration;
@@ -47,7 +55,6 @@ const ReactLogo = (props) => {
         {
           id,
           position: [currentPos.x, currentPos.y, currentPos.z],
-          time: Date.now(),
         },
       ]);
       reachedTargetHeight.current = true;
@@ -70,7 +77,7 @@ const ReactLogo = (props) => {
   return (
     <>
       {fireworks.map((fw) => (
-        <Firework key={fw.id} position={fw.position} trailCount={500} lightMode={props.lightMode} />
+        <Firework key={fw.id} position={fw.position} lightMode={props.lightMode} />
       ))}
 
       <group
