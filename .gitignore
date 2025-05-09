@@ -3,7 +3,8 @@
 .*/ 
 /src/constants/MyInfo.js
 /src/constants/SampleInfo.js
-/public/assets/image/
+/public/assets/image/*
+!/public/assets/image/screen.png
 /public/assets/projects/
 /public/assets/icon/ntu.png
 /public/assets/icon/nthu.png
