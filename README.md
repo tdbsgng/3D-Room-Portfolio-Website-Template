@@ -10,8 +10,9 @@ This repository is a sample version intended for demonstration and ease of use. 
 
 ## 🧩 Features
 
-- **Interactive 3D environment** rendered in real-time.
-- Clickable 3D items representing programming languages and tools.
+- **3D environment** rendered in real-time.
+- **Interactive components** with different visual and interaction effects.
+- **File-system-style interface** to display user information intuitively.
 
 ## 🚀 Quickstart
 
