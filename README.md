@@ -48,7 +48,7 @@ Make sure the following tools are installed on your system:
    ```
 
 4. Open your browser and navigate to `http://localhost:4000` to view the website.
-### Personalize the website
+### 📝 Personalize the website
 1. Edit the `src/constants/Info.js` file to customize your information.
 2. Edit the `src/constants/RoomItemsConfig.js` file to customize the 3D models layout in the room.
 
