@@ -23,7 +23,7 @@ Get the project up and running locally in a few simple steps.
 Make sure the following tools are installed on your system:
 
 - [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/)
+- [Node.js](https://nodejs.org/) (⚠️ **Node.js v18 or higher is required**)
 - [npm](https://www.npmjs.com/)
 
 ### 📥 Setup
