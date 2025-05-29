@@ -51,7 +51,7 @@ const AboutMe = () => {
                   return (
                     <div
                       key={index}
-                      className="absolute rounded-xl border-2 border-purple-700 bg-gradient-to-b from-gray-700 to-gray-900 shadow-lg p-4 flex items-center justify-center transition-all duration-500"
+                      className="absolute rounded-xl border-2 border-purple-700 bg-gradient-to-b from-gray-700 to-gray-900 shadow-lg p-4 flex items-center justify-center transition-all duration-500 select-none"
                       style={{
                         width: "100px",
                         height: "100px",

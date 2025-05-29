@@ -27,9 +27,9 @@ const MediaDisplay = (props) => {
     const extension = url.split(".").pop().toLowerCase();
     if (["mp4", "webm", "ogg", "mov"].includes(extension)) return "video";
     if (["jpg", "jpeg", "png", "gif", "svg", "webp"].includes(extension)) return "image";
+    if (extension === "pdf") return "pdf";
     return "unknown";
   };
-
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -116,6 +116,15 @@ const MediaDisplay = (props) => {
                 playsInline
                 onLoadedData={() => setIsLoading(false)}
                 onError={() => setIsLoading(false)}
+                style={{ visibility: isLoading ? "hidden" : "visible" }}
+              />
+            ) : getMediaType(currentMedia) === "pdf" ? (
+              <iframe
+                src={currentMedia}
+                className="w-[90vw] h-[90vh] rounded-lg"
+                title="PDF Viewer"
+                onError={() => setIsLoading(false)}
+                onLoad={() => setIsLoading(false)}
                 style={{ visibility: isLoading ? "hidden" : "visible" }}
               />
             ) : (
